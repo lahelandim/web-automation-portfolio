@@ -1,32 +1,10 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import http from 'node:http';
-import { readFile } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-const { chromium } = require('playwright');
-const root = fileURLToPath(new URL('..', import.meta.url));
-const types = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.svg': 'image/svg+xml' };
+import { startServer, launchBrowser } from './helpers.mjs';
 
 let server, browser, base;
 
-before(async () => {
-  server = http.createServer(async (req, res) => {
-    const path = req.url.split('?')[0];
-    const file = normalize(join(root, path === '/' ? 'index.html' : path));
-    if (!file.startsWith(root)) { res.writeHead(403).end(); return; }
-    try {
-      const body = await readFile(file);
-      res.writeHead(200, { 'content-type': types[extname(file)] || 'application/octet-stream' }).end(body);
-    } catch { res.writeHead(404).end(); }
-  });
-  await new Promise((r) => server.listen(0, r));
-  base = `http://localhost:${server.address().port}/`;
-  browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
-});
+before(async () => { ({ server, base } = await startServer()); browser = await launchBrowser(); });
 
 after(async () => { await browser?.close(); server?.close(); });
 

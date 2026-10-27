@@ -25,7 +25,9 @@ index.html              The whole page
 assets/css/styles.css   Styles (colors and sizes are CSS variables at the top)
 assets/js/main.js       Mobile menu and demo form validation
 assets/img/             SVG logo, hero illustration, social image
-tests/smoke.test.mjs    Browser smoke tests (Playwright)
+tests/                  Browser tests (Playwright, axe)
+scripts/check-secrets.mjs Local secret scan
+docs/                   Portuguese testing and publishing guide
 .github/workflows/      CI (lint and tests) and optional GitHub Pages deploy
 robots.txt, sitemap.xml SEO files
 ```
@@ -56,7 +58,15 @@ npm run lint   # validates HTML and CSS
 npm test       # starts a local server and checks the page in headless Chromium
 ```
 
-The tests check that all sections exist, there is exactly one `h1`, images have alt text, there is no horizontal scrolling at 375, 768, and 1280 px wide, the mobile menu works, and the form validates.
+The tests check that all sections exist, automated accessibility (axe, WCAG 2.1 AA) has no violations, internal links and assets resolve, there is exactly one `h1`, images have alt text, there is no horizontal scrolling at 375, 768, and 1280 px wide, the mobile menu works, and the form validates.
+
+To run everything at once (lint, tests, accessibility, links, secret scan, dependency audit):
+
+```bash
+npm run check
+```
+
+A Portuguese guide for local testing and demo publishing is in [docs/TESTAR-E-PUBLICAR.pt-BR.md](docs/TESTAR-E-PUBLICAR.pt-BR.md).
 
 If Playwright cannot find a browser, run `npx playwright install chromium`, or set `CHROMIUM_PATH` to an existing Chrome/Chromium executable.
 
