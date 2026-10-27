@@ -1,0 +1,3 @@
+# Demo site: keep it out of search results. Remove "Disallow" for a real client site.
+User-agent: *
+Disallow: /

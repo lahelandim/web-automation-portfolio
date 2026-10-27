@@ -1,0 +1,24 @@
+{
+  "name": "web-automation-portfolio",
+  "version": "1.0.0",
+  "description": "Demo website for a fictional home cleaning company (portfolio project).",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "http-server . -p 8080 -c-1",
+    "lint": "npm run lint:html && npm run lint:css",
+    "lint:html": "html-validate index.html",
+    "lint:css": "stylelint \"assets/css/*.css\"",
+    "test": "node --test tests/smoke.test.mjs"
+  },
+  "devDependencies": {
+    "html-validate": "^9.0.0",
+    "http-server": "^14.1.1",
+    "playwright": "^1.50.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
